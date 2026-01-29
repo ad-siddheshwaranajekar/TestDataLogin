@@ -1,0 +1,25 @@
+{
+  "name": "Ally_UI",
+  "version": "1.0.0",
+  "lockfileVersion": 3,
+  "requires": true,
+  "author": "",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "packages": {},
+  "devDependencies": {
+    "@faker-js/faker": "^10.1.0",
+    "@playwright/test": "^1.58.0",
+    "@types/node": "^24.10.1",
+    "dotenv": "^17.2.3",
+    "dotenv-cli": "^11.0.0",
+    "ortoni-report": "^4.0.1"
+  },
+  "overrides": {
+    "qs": "^6.14.1",
+    "tar": "^7.5.7"
+  },
+  "scripts": {}
+}
