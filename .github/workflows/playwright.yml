@@ -15,19 +15,43 @@ on:
 
 jobs:
   e2e:
+    name: Playwright E2E (${{ inputs.TEST_ENV }})
     runs-on: ubuntu-latest
+
+    # 🔑 This links the job to the GitHub Environment
     environment: ${{ inputs.TEST_ENV }}
 
+    # 🌍 Environment variables available to Playwright
     env:
       TEST_ENV: ${{ inputs.TEST_ENV }}
 
-    steps:
-      - uses: actions/checkout@v4
+      # QAT
+      QAT_ALLY1: ${{ secrets.QAT_ALLY1 }}
+      QAT_ALLY1_PASSWORD: ${{ secrets.QAT_ALLY1_PASSWORD }}
+      QAT_ALLY2: ${{ secrets.QAT_ALLY2 }}
+      QAT_ALLY2_PASSWORD: ${{ secrets.QAT_ALLY2_PASSWORD }}
+      QAT_ALLY3: ${{ secrets.QAT_ALLY3 }}
+      QAT_ALLY3_PASSWORD: ${{ secrets.QAT_ALLY3_PASSWORD }}
 
-      - name: Setup Node
+      # UAT
+      UAT_ALLY1: ${{ secrets.UAT_ALLY1 }}
+      UAT_ALLY1_PASSWORD: ${{ secrets.UAT_ALLY1_PASSWORD }}
+      UAT_ALLY2: ${{ secrets.UAT_ALLY2 }}
+      UAT_ALLY2_PASSWORD: ${{ secrets.UAT_ALLY2_PASSWORD }}
+
+      # DEV
+      DEV_ALLY1: ${{ secrets.DEV_ALLY1 }}
+      DEV_ALLY1_PASSWORD: ${{ secrets.DEV_ALLY1_PASSWORD }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
@@ -37,3 +61,10 @@ jobs:
 
       - name: Run Playwright tests
         run: npx playwright test
+
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ inputs.TEST_ENV }}
+          path: playwright-report
