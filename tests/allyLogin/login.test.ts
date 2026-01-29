@@ -3,13 +3,26 @@ import { LoginPage } from "../../pages/login/loginPage";
 import { TestConfig } from "../../testData/config/env.config";
 
 test.describe("Login Module", () => {
-  test.only("Login with valid credentials @smoke @regression", async ({
+  test("Login with valid credentials 1 @smoke @regression", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
 
     await loginPage.navigate();
     await loginPage.loginAsAlly("ally1"); // Use dynamic ally credentials
+
+    const usersHeader = page.locator("//h3[normalize-space()='Users']");
+    await expect(usersHeader).toBeVisible({ timeout: 15000 });
+    await expect(usersHeader).toHaveText("Users");
+  });
+
+  test("Login with valid credentials 2 @smoke @regression", async ({
+    page,
+  }) => {
+    const loginPage = new LoginPage(page);
+
+    await loginPage.navigate();
+    await loginPage.loginAsAlly("ally2"); // Use dynamic ally credentials
 
     const usersHeader = page.locator("//h3[normalize-space()='Users']");
     await expect(usersHeader).toBeVisible({ timeout: 15000 });
